@@ -1,0 +1,24 @@
+{
+  "name": "todolist_es6",
+  "version": "1.0.0",
+  "description": "ToDoList is used to manage task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huynhduluong/ToDoList_ES6.git"
+  },
+  "author": "Luong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huynhduluong/ToDoList_ES6/issues"
+  },
+  "homepage": "https://github.com/huynhduluong/ToDoList_ES6#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "axios": "^0.20.0",
+    "jquery": "^3.5.1"
+  }
+}
