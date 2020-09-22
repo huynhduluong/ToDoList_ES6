@@ -1,3 +1,5 @@
+import { callApi } from "./utils/callApi.js";
+
 const getEle = (id) => document.getElementById(id);
 
 const renderLayoutHTML = () => {
@@ -26,33 +28,11 @@ const renderLayoutHTML = () => {
                 <div class="card__todo">
                 <!-- Uncompleted tasks -->
                 <ul class="todo" id="todo">
-                    <li>
-                    <span>Đi ngủ</span>
-                    <div class="buttons">
-                        <button class="remove">
-                        <i class="fa fa-trash-alt"></i>
-                        </button>
-                        <button class="complete">
-                        <i class="far fa-check-circle"></i>
-                        <i class="fas fa-check-circle"></i>
-                        </button>
-                    </div>
-                    </li>
+                    
                 </ul>
                 <!-- Completed tasks -->
                 <ul class="todo" id="completed">
-                    <li>
-                    <span>Ăn sáng</span>
-                    <div class="buttons">
-                        <button class="remove">
-                        <i class="fa fa-trash-alt"></i>
-                        </button>
-                        <button class="complete">
-                        <i class="far fa-check-circle"></i>
-                        <i class="fas fa-check-circle"></i>
-                        </button>
-                    </div>
-                    </li>
+                    
                 </ul>
                 </div>
             </div>
@@ -62,6 +42,49 @@ const renderLayoutHTML = () => {
     getEle("root").innerHTML = contentHTML;
 }
 
+const renderTaskHTML = (task) => {
+    return `<li>
+        <span>${task.textTodo}</span>
+        <div class="buttons">
+            <button class="remove">
+            <i class="fa fa-trash-alt"></i>
+            </button>
+            <button class="complete">
+            <i class="far fa-check-circle"></i>
+            <i class="fas fa-check-circle"></i>
+            </button>
+        </div>
+    </li> `;
+}
+
+const renderListTask = () => {
+    callApi("task", "GET", null)
+        .then((result) => {
+            let taskArray = result.data;
+            let contentTodo = "";
+            let contentCompleted = "";
+            getEle("todo").innerHTML = "";
+            getEle("completed").innerHTML = "";
+            if (taskArray && taskArray.length > 0) {
+                taskArray.map((task) => {
+                    if (task.status == "todo") {
+                        contentTodo += renderTaskHTML(task);
+                        getEle("todo").innerHTML = contentTodo;
+                    }else{
+                        contentCompleted += renderTaskHTML(task);
+                        getEle("completed").innerHTML = contentCompleted;
+                    }
+                });
+            };
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+//render in the first loading page
 renderLayoutHTML();
+renderListTask();
+
 
 
