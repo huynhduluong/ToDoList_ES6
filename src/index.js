@@ -45,14 +45,14 @@ const renderLayoutHTML = () => {
 
 const renderTaskHTML = (task) => {
     return `<li>
-        <span>${task.textTodo}</span>
+        <span>${task.textTask}</span>
         <div class="buttons">
-            <button class="remove">
-            <i class="fa fa-trash-alt"></i>
+            <button class="remove" onclick="deleteTask(${task.id})">
+                <i class="fa fa-trash-alt"></i>
             </button>
-            <button class="complete">
-            <i class="far fa-check-circle"></i>
-            <i class="fas fa-check-circle"></i>
+            <button class="complete" onclick="changeStatus(${task.id})">
+                <i class="far fa-check-circle"></i>
+                <i class="fas fa-check-circle"></i>
             </button>
         </div>
     </li> `;
@@ -89,12 +89,12 @@ renderListTask();
 
 getEle("addItem").addEventListener("click", () => {
     let task = getEle("newTask").value;
-    if (textTodo === "") {
+    if (task === "") {
         alert("Please input task!");
         return;
     }
 
-    let newTask = new Task("", textTodo, "todo" );
+    let newTask = new Task("", task, "todo" );
     callApi("TaskTodo", "POST", newTask)
         .then((result) => {
             alert("Add task success")
@@ -107,4 +107,18 @@ getEle("addItem").addEventListener("click", () => {
 });
 
 
+window.deleteTask = deleteTask;
+function deleteTask(id) {
+    if (!confirm("Do you want to delete this task")) {
+        return;
+    };
+    callApi(`TaskTodo/${id}`, "DELETE", null)
+        .then(result => {
+            alert("Delete task success");
+            renderListTask();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
 
