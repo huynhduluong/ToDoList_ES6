@@ -1,4 +1,5 @@
 import { callApi } from "./utils/callApi.js";
+import Task from "./models/Task.js";
 
 const getEle = (id) => document.getElementById(id);
 
@@ -58,7 +59,7 @@ const renderTaskHTML = (task) => {
 }
 
 const renderListTask = () => {
-    callApi("task", "GET", null)
+    callApi("TaskTodo", "GET", null)
         .then((result) => {
             let taskArray = result.data;
             let contentTodo = "";
@@ -85,6 +86,25 @@ const renderListTask = () => {
 //render in the first loading page
 renderLayoutHTML();
 renderListTask();
+
+getEle("addItem").addEventListener("click", () => {
+    let task = getEle("newTask").value;
+    if (textTodo === "") {
+        alert("Please input task!");
+        return;
+    }
+
+    let newTask = new Task("", textTodo, "todo" );
+    callApi("TaskTodo", "POST", newTask)
+        .then((result) => {
+            alert("Add task success")
+            renderListTask();
+            getEle("newTask").value = "";
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 
 
