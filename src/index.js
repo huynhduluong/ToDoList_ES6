@@ -122,3 +122,31 @@ function deleteTask(id) {
         });
 }
 
+//Written by Promise ES6
+window.changeStatus = changeStatus;
+function changeStatus(id) {
+    callApi(`TaskTodo/${id}`, "GET", null)
+        .then(result => {
+            let task = result.data;
+            task.status = task.status === "todo" ? "completed" : "todo";
+            return callApi(`TaskTodo/${id}`, "PUT", task);
+        })
+        .then(result => {
+            alert("Change status success");
+            renderListTask();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+//Written by ES7 async await
+// window.changeStatus = changeStatus;
+// async function changeStatus(id) {
+//     let result = await callApi(`TaskTodo/${id}`, "GET", null);
+//     let task = result.data;
+//     task.status = task.status === "todo" ? "completed" : "todo";
+//     await callApi(`TaskTodo/${id}`, "PUT", task);
+//     alert("Change status success");
+//     renderListTask();
+// }
